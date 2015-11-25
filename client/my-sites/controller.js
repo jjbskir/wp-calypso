@@ -10,6 +10,8 @@ var page = require( 'page' ),
 var user = require( 'lib/user' )(),
 	sites = require( 'lib/sites-list' )(),
 	layoutFocus = require( 'lib/layout-focus' ),
+	sitesActions = require( 'state/sites/actions' ),
+	uiActions = require( 'state/ui/actions' ),
 	NavigationComponent = require( 'my-sites/navigation' ),
 	route = require( 'lib/route' ),
 	i18n = require( 'lib/mixins/i18n' ),
@@ -130,6 +132,13 @@ module.exports = {
 			return next();
 		}
 
+		function onSelectedSiteAvailable() {
+			var selectedSite = sites.getSelectedSite();
+			siteStatsStickyTabActions.saveFilterAndSlug( false, selectedSite.slug );
+			context.store.dispatch( sitesActions.receiveSite( selectedSite ) );
+			context.store.dispatch( uiActions.setSelectedSite( selectedSite.ID ) );
+		}
+
 		// If there's a valid site from the url path
 		// set site visibility to just that site on the picker
 		if ( ! sites.select( siteID ) ) {
@@ -145,10 +154,10 @@ module.exports = {
 					page.redirect( allSitesPath );
 				}
 
-				siteStatsStickyTabActions.saveFilterAndSlug( false, sites.getSelectedSite().slug );
+				onSelectedSiteAvailable();
 			} );
 		} else {
-			siteStatsStickyTabActions.saveFilterAndSlug( false, sites.getSelectedSite().slug );
+			onSelectedSiteAvailable();
 		}
 
 		next();
