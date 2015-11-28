@@ -7,6 +7,7 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 /**
  * Internal dependencies
  */
+import { analyticsMiddleware } from 'lib/themes/middlewares.js';
 import sharing from './sharing/reducer';
 import sites from './sites/reducer';
 import themes from 'lib/themes/reducers';
@@ -24,6 +25,7 @@ const reducer = combineReducers( {
 
 export function createReduxStore() {
 	return applyMiddleware(
-		thunkMiddleware
+		thunkMiddleware,
+		analyticsMiddleware
 	)( createStore )( reducer );
 };
