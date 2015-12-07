@@ -53,7 +53,8 @@ var controller = {
 						basePath,
 						analyticsPageTitle,
 						'Themes'
-					)
+					),
+					dispatch: context.store.dispatch
 				} )
 			),
 			document.getElementById( 'primary' )
