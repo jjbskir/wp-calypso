@@ -54,7 +54,7 @@ var controller = {
 						analyticsPageTitle,
 						'Themes'
 					),
-					dispatch: context.store.dispatch
+					store: context.store
 				} )
 			),
 			document.getElementById( 'primary' )
