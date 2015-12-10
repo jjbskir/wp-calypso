@@ -36,6 +36,7 @@ require( './plugins/wpcom-tabindex/plugin' )();
 require( './plugins/touch-scroll-toolbar/plugin' )();
 require( './plugins/editor-button-analytics/plugin' )();
 require( './plugins/calypso-alert/plugin' )();
+require( './plugins/syntax-highlighter/plugin' )();
 
 /**
  * Internal Dependencies
@@ -95,6 +96,7 @@ const PLUGINS = [
 	'wpcom/editorbuttonanalytics',
 	'wpcom/calypsoalert',
 	'wpcom/tabindex',
+	'wpcom/syntaxhighlighter',
 ];
 
 const CONTENT_CSS = [
