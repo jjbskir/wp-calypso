@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-var React = require( 'react/addons' );
+var React = require( 'react/addons' ),
+	connect = require( 'react-redux' ).connect;
 
 /**
  * Internal dependencies
@@ -17,7 +18,7 @@ var analytics = require( 'analytics' ),
 	Gridicon = require( 'components/gridicon' ),
 	createSitePlanObject = require( 'state/site-plans/assembler' ).createSitePlanObject;
 
-module.exports = React.createClass( {
+var Plans = React.createClass( {
 	displayName: 'Plans',
 
 	mixins: [ siteSpecificPlansDetailsMixin, observe( 'sites', 'plans', 'siteSpecificPlansDetailsList' ) ],
@@ -98,3 +99,11 @@ module.exports = React.createClass( {
 		);
 	}
 } );
+
+module.exports = connect(
+	( state ) => {
+		return {
+			sitePlans: state.sitePlans
+		};
+	}
+)( Plans );

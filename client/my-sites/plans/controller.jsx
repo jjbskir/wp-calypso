@@ -3,6 +3,7 @@
  */
 var page = require( 'page' ),
 	React = require( 'react' ),
+	ReduxProvider = require( 'react-redux' ).Provider,
 	defer = require( 'lodash/function/defer' );
 
 /**
@@ -77,13 +78,17 @@ module.exports = {
 		analytics.pageView.record( analyticsBasePath, analyticsPageTitle );
 
 		React.render(
-			<CartData>
-				<Plans sites={ sites }
-					onSelectPlan={ onSelectPlan }
-					plans={ plans }
-					siteSpecificPlansDetailsList={ siteSpecificPlansDetailsList }
-					context={ context } />
-			</CartData>,
+			React.createElement( ReduxProvider, { store: context.store }, () => {
+				return (
+					<CartData>
+						<Plans sites={ sites }
+							onSelectPlan={ onSelectPlan }
+							plans={ plans }
+							siteSpecificPlansDetailsList={ siteSpecificPlansDetailsList }
+							context={ context } />
+					</CartData>
+				);
+			} ),
 			document.getElementById( 'primary' )
 		);
 	},
