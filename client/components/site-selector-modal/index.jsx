@@ -80,8 +80,8 @@ var SiteSelectorModal = React.createClass( {
 					{ this.props.children }
 				</div>
 				<SitesDropdown
-					onSiteSelect={ this.setSite } />
-
+					onSiteSelect={ this.setSite }
+					filter={ this.props.filter } />
 			</Dialog>
 		);
 	}
