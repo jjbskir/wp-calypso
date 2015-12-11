@@ -14,7 +14,6 @@ import ConnectedApplicationIcon from 'me/connected-application-icon';
 import safeProtocolUrl from 'lib/safe-protocol-url';
 import analytics from 'analytics';
 import Button from 'components/button';
-import Gridicon from 'components/gridicon';
 
 module.exports = React.createClass( {
 
@@ -225,9 +224,7 @@ module.exports = React.createClass( {
 					</div>
 
 					<div className="connected-application-item__disconnect">
-						<Button borderless scary onClick={ this.disconnect }>
-							<Gridicon icon="link-break" /> { this.translate( 'Disconnect' ) }
-						</Button>
+						<Button borderless scary onClick={ this.disconnect }>{ this.translate( 'Disconnect' ) }</Button>
 					</div>
 
 				</div>
