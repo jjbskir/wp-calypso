@@ -11,8 +11,8 @@ import { action as ActionTypes } from 'lib/reader-lists-tags/constants';
 
 var tags = OrderedSet(), // eslint-disable-line new-cap
 	errors = [],
-	currentPage = 0,
-	isLastPage = false,
+	currentPage = {},
+	isLastPage = {},
 	isFetching = false;
 
 const ReaderListsTagsStore = {
@@ -20,7 +20,7 @@ const ReaderListsTagsStore = {
 	receiveTags: function( data ) {
 		// Is it the last page?
 		if ( data.number === 0 ) {
-			isLastPage = true;
+			isLastPage[ data.list_ID ] = true;
 		}
 
 		const previousTags = tags;
@@ -38,7 +38,7 @@ const ReaderListsTagsStore = {
 		}
 
 		// Set the current page
-		currentPage = data.page;
+		currentPage[ data.list_ID ] = data.page;
 	},
 
 	getTagsForList: function( listId ) {
@@ -60,12 +60,12 @@ const ReaderListsTagsStore = {
 		ReaderListsTagsStore.emitChange();
 	},
 
-	isLastPage: function() {
-		return isLastPage;
+	isLastPage: function( listId ) {
+		return isLastPage[ listId ] ? isLastPage[ listId ] : false;
 	},
 
-	getCurrentPage: function() {
-		return currentPage;
+	getCurrentPage: function( listId ) {
+		return currentPage[ listId ] ? currentPage[ listId ] : 0;
 	}
 };
 

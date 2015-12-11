@@ -19,6 +19,7 @@ import ReaderListsTagsStore from 'lib/reader-lists-tags/store';
 import { fetchMoreTags } from 'lib/reader-lists-tags/actions';
 
 const debug = debugModule( 'calypso:reader:list-management' ); // eslint-disable-line
+
 let listFetchAttempts = 0;
 
 const ListManagementTags = React.createClass( {
@@ -43,15 +44,21 @@ const ListManagementTags = React.createClass( {
 
 		// Fetch tags, but only if we have the list information
 		let tags = null;
+		let isLastPage = false;
+		let currentPage = 0;
 		if ( list && list.ID ) {
 			tags = this.getTags( list.ID );
+			isLastPage = ReaderListsTagsStore.isLastPage( list.ID );
+			currentPage = ReaderListsTagsStore.getCurrentPage( list.ID );
 		}
+
+		debug( tags );
 
 		return {
 			list,
 			tags,
-			currentPage: ReaderListsTagsStore.getCurrentPage(),
-			isLastPage: ReaderListsTagsStore.isLastPage(),
+			isLastPage,
+			currentPage,
 			isFetchingTags: ReaderListsTagsStore.isFetching(),
 			lastError: ReaderListsTagsStore.getLastError(),
 		};
@@ -104,8 +111,8 @@ const ListManagementTags = React.createClass( {
 	},
 
 	trackTagClick() {
-		// stats.recordAction( 'click_site_on_list_following' );
-		// stats.recordGaEvent( 'Clicked Site on List Following' );
+		stats.recordAction( 'click_tag_on_list_management' );
+		stats.recordGaEvent( 'Clicked Tag on List Management' );
 	},
 
 	renderItem( tag ) {
@@ -149,7 +156,7 @@ const ListManagementTags = React.createClass( {
 			message = ( <p> {this.translate( 'Loading list information…' ) } </p> );
 		}
 
-		if ( this.state.list && ! this.state.tags && ! this.state.isFetchingTags ) {
+		if ( this.state.list && ( ! this.state.tags || this.state.tags.length === 0 ) && ! this.state.isFetchingTags ) {
 			message = ( <p> {this.translate( 'This list does not have any tags yet.' ) } </p> );
 		}
 
