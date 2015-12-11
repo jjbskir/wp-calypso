@@ -196,7 +196,7 @@ function boot() {
 		window.history.replaceState( null, document.title, window.location.pathname );
 	}
 
-	setUpContext( layout );
+	setUpContext( layout, reduxStore );
 
 	page( '*', require( 'lib/route/normalize' ) );
 
