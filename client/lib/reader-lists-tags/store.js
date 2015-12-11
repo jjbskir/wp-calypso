@@ -43,7 +43,7 @@ const ReaderListsTagsStore = {
 
 	getTagsForList: function( listId ) {
 		return tags.filter( function( tag ) {
-			return tag.get( 'list_ID' ) === listId;
+			return tag.get( 'list_ID' ) === parseInt( listId );
 		} ).toJS();
 	},
 

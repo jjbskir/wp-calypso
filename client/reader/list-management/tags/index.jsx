@@ -13,11 +13,13 @@ import Title from 'reader/list-item/title';
 import Description from 'reader/list-item/description';
 import Actions from 'reader/list-item/actions';
 import Gridicon from 'components/gridicon';
-import ReaderListsStore from 'lib/reader-lists/subscriptions';
+import ListStore from 'lib/reader-lists/lists';
+import ReaderListsActions from 'lib/reader-lists/actions';
 import ReaderListsTagsStore from 'lib/reader-lists-tags/store';
 import { fetchMoreTags } from 'lib/reader-lists-tags/actions';
 
 const debug = debugModule( 'calypso:reader:list-management' ); // eslint-disable-line
+let listFetchAttempts = 0;
 
 const ListManagementTags = React.createClass( {
 	propTypes: {
@@ -33,20 +35,24 @@ const ListManagementTags = React.createClass( {
 
 	getStateFromStores() {
 		// Grab the list ID from the list store
-		//const list = ReaderListsStore.findByOwnerAndSlug( this.props.owner, this.props.slug );
-		const list = {
-			ID: 117361 // bluefuton/abcde
+		const list = ListStore.get( this.props.list.owner, this.props.list.slug );
+		if ( ! list && listFetchAttempts < 3 ) {
+			ReaderListsActions.fetchSubscriptions();
+			listFetchAttempts++;
 		}
+
+		// Fetch tags, but only if we have the list information
 		let tags = null;
 		if ( list && list.ID ) {
 			tags = this.getTags( list.ID );
 		}
+
 		return {
 			list,
 			tags,
 			currentPage: ReaderListsTagsStore.getCurrentPage(),
 			isLastPage: ReaderListsTagsStore.isLastPage(),
-			isFetching: ReaderListsTagsStore.isFetching(),
+			isFetchingTags: ReaderListsTagsStore.isFetching(),
 			lastError: ReaderListsTagsStore.getLastError(),
 		};
 	},
@@ -56,16 +62,16 @@ const ListManagementTags = React.createClass( {
 	},
 
 	update() {
-		this.setState( this.getStateFromStores() ); // @todo smartgetstate
+		this.setState( this.getStateFromStores() ); // @todo use smartstate from Following Management
 	},
 
 	componentDidMount() {
-		ReaderListsStore.on( 'change', this.update );
+		ListStore.on( 'change', this.update );
 		ReaderListsTagsStore.on( 'change', this.update );
 	},
 
 	componentWillUnmount() {
-		ReaderListsStore.off( 'change', this.update );
+		ListStore.off( 'change', this.update );
 		ReaderListsTagsStore.off( 'change', this.update );
 	},
 
@@ -118,13 +124,13 @@ const ListManagementTags = React.createClass( {
 		);
 	},
 
-	render() {
-		let mainContent = null;
-		if ( ! this.state.tags && ! this.state.isFetching ) {
-			mainContent = ( <p>No tags yet!</p> );
-		} else {
-			mainContent = (
-				<InfiniteList
+	renderTagList() {
+		if ( ! this.state.tags ) {
+			return null;
+		}
+
+		return (
+			<InfiniteList
 					items={ this.state.tags }
 					fetchingNextPage={ this.state.isFetching }
 					lastPage={ this.state.isLastPage }
@@ -134,13 +140,24 @@ const ListManagementTags = React.createClass( {
 					renderItem={ this.renderItem }
 					renderLoadingPlaceholders={ this.renderPlaceholders }
 				/>
-			);
+		);
+	},
+
+	render() {
+		let message = null;
+		if ( ! this.state.list ) {
+			message = ( <p> {this.translate( 'Loading list information…' ) } </p> );
+		}
+
+		if ( this.state.list && ! this.state.tags && ! this.state.isFetchingTags ) {
+			message = ( <p> {this.translate( 'This list does not have any tags yet.' ) } </p> );
 		}
 
 		return (
 			<Main className="list-management-tags">
 				<Navigation selected="tags" list={ this.props.list } />
-				{ mainContent }
+				{ message }
+				{ this.renderTagList() }
 			</Main>
 			);
 	}
