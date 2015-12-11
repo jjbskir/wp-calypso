@@ -8,6 +8,7 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
  * Internal dependencies
  */
 import sharing from './sharing/reducer';
+import sitePlans from './site-plans/reducer';
 import sites from './sites/reducer';
 import ui from './ui/reducer';
 
@@ -16,6 +17,7 @@ import ui from './ui/reducer';
  */
 const reducer = combineReducers( {
 	sharing,
+	sitePlans,
 	sites,
 	ui
 } );
