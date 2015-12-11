@@ -29,14 +29,16 @@ export default React.createClass( {
 		showAllSites: React.PropTypes.bool,
 		indicator: React.PropTypes.bool,
 		autoFocus: React.PropTypes.bool,
-		onClose: React.PropTypes.func
+		onClose: React.PropTypes.func,
+		onSiteSelect: React.PropTypes.func
 	},
 
 	getDefaultProps() {
 		return {
 			showAllSites: false,
 			indicator: false,
-			onClose: noop
+			onClose: noop,
+			onSiteSelect: noop
 		};
 	},
 
@@ -52,6 +54,7 @@ export default React.createClass( {
 	},
 
 	selectSite( siteSlug ) {
+		this.props.onSiteSelect( siteSlug );
 		this.setState( {
 			selected: siteSlug,
 			open: false
