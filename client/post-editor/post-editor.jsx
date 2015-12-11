@@ -288,7 +288,7 @@ var PostEditor = React.createClass( {
 				<div className="post-editor__inner">
 					<div className="post-editor__sidebar">
 						<div className="post-editor__sidebar-header">
-							{ config.isEnabled( 'editor-drafts' ) && this.state.showDrafts ?
+							{ this.state.showDrafts ?
 								<button className="post-editor__close" onClick={ this.toggleDrafts } aria-label={ this.translate( 'Close drafts list' ) }>
 									<Gridicon icon="cross" size={ 18 } />
 									<span>{ this.translate( 'Close' ) }</span>
@@ -308,7 +308,7 @@ var PostEditor = React.createClass( {
 								<span>{ this.translate( 'Write' ) }</span>
 							</button>
 						</div>
-						{ config.isEnabled( 'editor-drafts' ) && this.state.showDrafts ?
+						{ this.state.showDrafts ?
 							<DraftList { ...this.props }
 								onTitleClick={ this.toggleSidebar }
 								showAllActionsMenu={ false }
@@ -629,8 +629,12 @@ var PostEditor = React.createClass( {
 		}
 
 		previewPost = function() {
-			this._previewWindow.location = this.state.previewUrl;
-			this._previewWindow.focus();
+			if ( this._previewWindow ) {
+				this._previewWindow.location = this.state.previewUrl;
+				this._previewWindow.focus();
+			} else {
+				this._previewWindow = window.open( this.state.previewUrl, 'WordPress.com Post Preview' );
+			}
 		}.bind( this );
 
 		if ( status === 'publish' ) {
