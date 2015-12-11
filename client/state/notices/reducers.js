@@ -9,7 +9,7 @@ import { filter } from 'lodash';
  */
 import {
 	NEW_NOTICE,
-    REMOVE_NOTICE
+	REMOVE_NOTICE
 } from './action-types';
 
 /**

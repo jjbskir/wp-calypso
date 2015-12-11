@@ -3,7 +3,7 @@
  */
 import {
 	NEW_NOTICE,
-    REMOVE_NOTICE
+	REMOVE_NOTICE
 } from './action-types';
 
 import { uniqueId } from 'lodash';
