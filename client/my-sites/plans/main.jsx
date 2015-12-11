@@ -15,7 +15,7 @@ var analytics = require( 'analytics' ),
 	SidebarNavigation = require( 'my-sites/sidebar-navigation' ),
 	UpgradesNavigation = require( 'my-sites/upgrades/navigation' ),
 	Gridicon = require( 'components/gridicon' ),
-	createSiteSpecificPlanObject = require( 'lib/site-specific-plans-details-list/assembler' ).createSiteSpecificPlanObject;
+	createSitePlanObject = require( 'state/site-plans/assembler' ).createSitePlanObject;
 
 module.exports = React.createClass( {
 	displayName: 'Plans',
@@ -62,7 +62,7 @@ module.exports = React.createClass( {
 			currentPlan;
 
 		if ( this.props.siteSpecificPlansDetailsList.hasLoadedFromServer( selectedSiteDomain ) ) {
-			currentPlan = createSiteSpecificPlanObject( this.props.siteSpecificPlansDetailsList.getCurrentPlan( selectedSiteDomain ) );
+			currentPlan = createSitePlanObject( this.props.siteSpecificPlansDetailsList.getCurrentPlan( selectedSiteDomain ) );
 
 			if ( config.isEnabled( 'upgrades/free-trials' ) && currentPlan.freeTrial ) {
 				return (
