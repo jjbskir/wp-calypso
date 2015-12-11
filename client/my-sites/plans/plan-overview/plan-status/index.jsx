@@ -7,14 +7,23 @@ import classNames from 'classnames';
 /**
  * Internal dependencies
  */
+import Button from 'components/button';
+import { cartItems } from 'lib/cart-values';
 import CompactCard from 'components/card/compact';
 import PlanStatusProgress from './progress';
 import ProgressBar from 'components/progress-bar';
 import { isPremium, isBusiness } from 'lib/products-values';
+import * as upgradesActions from 'lib/upgrades/actions';
 
 const PlanStatus = React.createClass( {
 	propTypes: {
 		plan: React.PropTypes.object.isRequired
+	},
+
+	purchasePlan() {
+		const cartItem = cartItems.planItem( this.props.plan.productSlug );
+
+		upgradesActions.addItem( cartItem );
 	},
 
 	render() {
@@ -42,6 +51,12 @@ const PlanStatus = React.createClass( {
 							}
 						</h1>
 					</div>
+
+					<Button
+						className="plan-status__button"
+						onClick={ this.purchasePlan }>
+						{ this.translate( 'Purchase Now' ) }
+					</Button>
 				</CompactCard>
 
 				<PlanStatusProgress plan={ this.props.plan } />
