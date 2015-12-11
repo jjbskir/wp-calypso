@@ -151,9 +151,8 @@ module.exports = React.createClass( {
 
 	renderCount: function() {
 		return (
-			<div className="plugin-item__count">{ this.translate( 'Site {{count/}}', 'Sites {{count/}}',
+			<div className="plugin-item__count">{ this.translate( 'Sites {{count/}}',
 				{
-					count: this.props.sites.length,
 					components: {
 						count: <Count count={ this.props.sites.length } />
 					}
@@ -251,6 +250,7 @@ module.exports = React.createClass( {
 							{ pluginTitle }
 							{ this.pluginMeta( plugin ) }
 						</span>
+						{ this.props.selectedSite ? null : this.renderCount() }
 					</CompactCard>
 					<div>
 					{ this.state.clicked ? this.getNoManageWarning() : null }
