@@ -29,7 +29,6 @@ module.exports = {
 		render: function() {
 			return (
 				<div className="page-list__header is-placeholder">
-					<span className="noticon noticon-time" />
 					<span className="placeholder-text">{ this.translate( "Loading time marker…" ) }</span>
 				</div>
 			);
