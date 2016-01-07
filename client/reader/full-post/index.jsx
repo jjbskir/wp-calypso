@@ -113,7 +113,19 @@ FullPostView = React.createClass( {
 		let commentListNode = React.findDOMNode( this.refs.commentList );
 		if ( commentListNode ) {
 			this.hasScrolledToAnchor = true;
-			commentListNode.scrollIntoView( { behavior: 'smooth' } );
+			// commentListNode.scrollIntoView( { behavior: 'smooth' } );
+			this.scrollIntoView( commentListNode );
+		}
+	},
+
+	scrollIntoView: function( el ) {
+		let screenNode = document.getElementsByClassName( 'detail-page__content' )[ 0 ];
+		if ( screenNode && el ) {
+			var commentBounds = el.getBoundingClientRect(),
+				headerBounds = document.getElementsByClassName( 'detail-page__action-buttons' )[ 0 ].getBoundingClientRect(),
+				articleBounds = document.getElementsByClassName( 'reader__full-post' )[ 0 ].getBoundingClientRect(),
+				scrollToHeight = commentBounds.top - articleBounds.top - headerBounds.height;
+			screenNode.scrollTop = scrollToHeight;
 		}
 	},
 
